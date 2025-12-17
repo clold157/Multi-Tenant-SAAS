@@ -6,11 +6,11 @@
 -- - The function generates a reasonably-unique slug using a sanitized base + UUID suffix to avoid conflicts.
 -- - Any error during tenant creation is caught and logged via RAISE NOTICE; the auth.user creation will not be blocked.
 
-CREATE OR REPLACE FUNCTION auth.create_tenant_for_new_user()
+CREATE OR REPLACE FUNCTION public.create_tenant_for_new_user()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, auth
+SET search_path = public
 AS $$
 DECLARE
   tenant_name text;
@@ -82,4 +82,4 @@ DROP TRIGGER IF EXISTS create_tenant_after_user_insert ON auth.users;
 CREATE TRIGGER create_tenant_after_user_insert
   AFTER INSERT ON auth.users
   FOR EACH ROW
-  EXECUTE FUNCTION auth.create_tenant_for_new_user();
+  EXECUTE FUNCTION public.create_tenant_for_new_user();

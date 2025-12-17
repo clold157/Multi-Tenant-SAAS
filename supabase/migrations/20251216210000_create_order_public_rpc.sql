@@ -7,9 +7,9 @@
 -- validates tenant + product ownership, and inserts into orders/order_items.
 
 CREATE OR REPLACE FUNCTION public.create_order_public(
+  p_items jsonb,
   p_tenant_id uuid DEFAULT NULL,
-  p_tenant_slug text DEFAULT NULL,
-  p_items jsonb
+  p_tenant_slug text DEFAULT NULL
 )
 RETURNS TABLE (
   order_id uuid,
@@ -142,9 +142,9 @@ $$;
 
 -- Allow public (anon) callers to execute the RPC.
 -- Important: Postgres' default is to grant EXECUTE to PUBLIC, so we revoke first.
-REVOKE EXECUTE ON FUNCTION public.create_order_public(uuid, text, jsonb) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.create_order_public(uuid, text, jsonb) TO anon;
-GRANT EXECUTE ON FUNCTION public.create_order_public(uuid, text, jsonb) TO authenticated;
+REVOKE EXECUTE ON FUNCTION public.create_order_public(jsonb, uuid, text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.create_order_public(jsonb, uuid, text) TO anon;
+GRANT EXECUTE ON FUNCTION public.create_order_public(jsonb, uuid, text) TO authenticated;
 
 -- NOTE: We do NOT grant direct INSERT on orders/order_items to anon.
 -- The only allowed write path is through the RPC above.
