@@ -20,5 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "description": "⚠️ DEPRECATED - Arquivo configurado para builds Vite (legado). O projeto usa Next.js. Ver tsconfig.json para build atual."
 }
